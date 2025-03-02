@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import LoginForm from "./components/LoginForm";
+import Blog from "./components/Blog";
+import Togglable from "./components/Togglable";
 import loginServer from "./services/login";
 import blogService from "./services/blogs";
 import BlogForm from "./components/BlogForm";
@@ -13,6 +15,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState("");
   const [isError, setIsError] = useState(false);
+  const blogFormRef = useRef();
 
   //check if token already stored in localstorage
   useEffect(() => {
@@ -69,10 +72,10 @@ const App = () => {
   const handleNewBlog = async (newBlog) => {
     try {
       const response = await blogService.addBlog(newBlog);
-
+      setBlogs(blogs.concat(response));
       const { title, author, url } = response;
-      setBlogs((prevBlogs) => [...prevBlogs, response]);
       setNotification(`a new blog ${title} by ${author} added`);
+      blogFormRef.current.toggleVisibility();
     } catch (error) {
       setIsError(true);
       errorHandler(error, setNotification);
@@ -97,7 +100,6 @@ const App = () => {
           handleLogin={handleLogin}
         />
       )}
-
       {user && (
         <div>
           <p>
@@ -108,11 +110,15 @@ const App = () => {
       )}
 
       {user && (
-        <BlogForm
-          blogs={blogs}
-          setBlogs={setBlogs}
-          handleNewBlog={handleNewBlog}
-        />
+        <div>
+          <Togglable buttonLabel={"Add Blog"} ref={blogFormRef}>
+            <BlogForm setBlogs={setBlogs} handleNewBlog={handleNewBlog} />
+          </Togglable>
+
+          {blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+          ))}
+        </div>
       )}
     </div>
   );

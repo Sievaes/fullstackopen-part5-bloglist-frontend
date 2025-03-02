@@ -20,7 +20,7 @@ const LoginForm = ({
         {" "}
         Password{" "}
         <input
-          type="text"
+          type="password"
           name="Password"
           value={password}
           onChange={({ target }) => setPassword(target.value)}
