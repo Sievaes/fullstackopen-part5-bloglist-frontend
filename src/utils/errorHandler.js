@@ -12,7 +12,6 @@ const errorHandler = (error, setNotification) => {
     } else {
       setNotification("Error occured");
     }
-  } else {
   }
 };
 

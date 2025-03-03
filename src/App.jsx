@@ -33,7 +33,7 @@ const App = () => {
     const fetchBlogs = async () => {
       try {
         const response = await blogService.getAll();
-        setBlogs(response);
+        setBlogs(response.sort((a, b) => b.likes - a.likes));
       } catch (error) {
         setIsError(true);
         errorHandler(error, setNotification);
@@ -81,6 +81,34 @@ const App = () => {
       errorHandler(error, setNotification);
     }
   };
+
+  const handleNewLike = async (newBlog, id) => {
+    try {
+      const response = await blogService.addLike(newBlog, id);
+
+      setBlogs((prevBlogs) =>
+        prevBlogs
+          .map((blog) => (blog.id === id ? response : blog))
+          .sort((a, b) => b.likes - a.likes)
+      );
+    } catch (error) {
+      errorHandler(error, setNotification);
+    }
+  };
+
+  const handleDeleteBlog = async (blogs) => {
+    const { title, author, id } = blogs;
+
+    try {
+      const response = await blogService.deleteBlog(id);
+      if (response === 200) {
+        setNotification(`${title} from ${author} deleted`);
+      }
+      setBlogs((prevlogs) => prevlogs.filter((b) => b.id !== id));
+    } catch (error) {
+      errorHandler(error, setNotification);
+    }
+  };
   return (
     <div>
       {!user && <h2>Login</h2>}
@@ -112,11 +140,20 @@ const App = () => {
       {user && (
         <div>
           <Togglable buttonLabel={"Add Blog"} ref={blogFormRef}>
-            <BlogForm setBlogs={setBlogs} handleNewBlog={handleNewBlog} />
+            <BlogForm
+              setBlogs={setBlogs}
+              handleNewBlog={handleNewBlog}
+              handleNewLike={handleNewLike}
+            />
           </Togglable>
 
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleNewLike={handleNewLike}
+              handleDeleteBlog={handleDeleteBlog}
+            />
           ))}
         </div>
       )}

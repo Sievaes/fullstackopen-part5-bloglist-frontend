@@ -1,5 +1,4 @@
 import axios from "axios";
-import handleError from "../utils/errorHandler";
 
 const baseUrl = "/api/blogs";
 let token = null;
@@ -30,4 +29,31 @@ const addBlog = async (newBlog) => {
   }
 };
 
-export default { getAll, setToken, addBlog };
+const addLike = async (newBlog, id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+
+    const response = await axios.put(`${baseUrl}/${id}`, newBlog, config);
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteBlog = async (id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.delete(`${baseUrl}/${id}`, config);
+
+    return response.status;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export default { getAll, setToken, addBlog, addLike, deleteBlog };
