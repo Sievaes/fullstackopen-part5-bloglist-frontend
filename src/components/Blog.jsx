@@ -1,9 +1,9 @@
-import { useState } from "react";
-import blogService from "../services/blogs";
-import errorHandler from "../utils/errorHandler";
+import { useState } from "react"
+import blogService from "../services/blogs"
+import errorHandler from "../utils/errorHandler"
 
 const Blog = ({ blog, handleNewLike, handleDeleteBlog }) => {
-  const [informationVisible, setInformationVisible] = useState(false);
+  const [informationVisible, setInformationVisible] = useState(false)
 
   //blogstyle "CSS"
   const blogStyle = {
@@ -12,19 +12,19 @@ const Blog = ({ blog, handleNewLike, handleDeleteBlog }) => {
     border: "solid",
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
 
   const removeButtonStyle = {
     backgroundColor: "lightblue",
     borderRadius: "3px",
-  };
+  }
 
   const toggleVisibility = () => {
-    setInformationVisible((prev) => !prev);
-  };
+    setInformationVisible((prev) => !prev)
+  }
 
   const addLike = () => {
-    const id = blog.id;
+    const id = blog.id
 
     const newBlog = {
       user: blog.user.id,
@@ -32,13 +32,13 @@ const Blog = ({ blog, handleNewLike, handleDeleteBlog }) => {
       likes: blog.likes + 1,
       title: blog.title,
       url: blog.url,
-    };
-    handleNewLike(newBlog, id);
-  };
+    }
+    handleNewLike(newBlog, id)
+  }
 
   const deleteBlog = () => {
-    handleDeleteBlog(blog);
-  };
+    handleDeleteBlog(blog)
+  }
 
   return (
     <div style={blogStyle}>
@@ -60,7 +60,7 @@ const Blog = ({ blog, handleNewLike, handleDeleteBlog }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog
