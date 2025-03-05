@@ -72,9 +72,13 @@ const App = () => {
   const handleNewBlog = async (newBlog) => {
     try {
       const response = await blogService.addBlog(newBlog)
-      setBlogs(blogs.concat(response))
-      const { title, author, url } = response
-      setNotification(`a new blog ${title} by ${author} added`)
+
+      //will also add user to the blog, otherwise it wouldnt be shown before refresh
+      setBlogs(blogs.concat({ ...response, user }))
+
+      setNotification(
+        `a new blog ${response.title} by ${response.author} added`
+      )
       blogFormRef.current.toggleVisibility()
     } catch (error) {
       setIsError(true)
