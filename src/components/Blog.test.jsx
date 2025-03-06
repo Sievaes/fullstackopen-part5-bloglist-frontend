@@ -4,8 +4,6 @@ import Blog from "./Blog"
 import { beforeEach } from "vitest"
 
 describe("<Blog />", () => {
-  let container
-
   beforeEach(() => {
     const blog = {
       title: "title",
@@ -16,13 +14,11 @@ describe("<Blog />", () => {
         name: "Test User",
       },
     }
-    container = render(<Blog blog={blog} />).container
+    render(<Blog blog={blog} />).container
   })
 
   test("check only blog title and author is displayed, but not URL", () => {
     // Debug the container to see the rendered output
-
-    const div = container.querySelector("#blogStyle")
 
     expect(screen.queryByText("title", { exact: false })).toBeInTheDocument()
     expect(screen.queryByText("author", { exact: false })).toBeInTheDocument()
