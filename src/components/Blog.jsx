@@ -2,8 +2,9 @@ import { useState } from "react"
 import blogService from "../services/blogs"
 import errorHandler from "../utils/errorHandler"
 
-const Blog = ({ blog, handleNewLike, handleDeleteBlog }) => {
+const Blog = ({ blog, handleNewLike, handleDeleteBlog, username }) => {
   const [informationVisible, setInformationVisible] = useState(false)
+  const isBlogMadeByThisUser = username === blog.user.username ? true : false
 
   //blogstyle "CSS"
   const blogStyle = {
@@ -54,9 +55,11 @@ const Blog = ({ blog, handleNewLike, handleDeleteBlog }) => {
             Likes: {blog.likes} <button onClick={addLike}>Like</button>
           </p>
           <p>Added by: {blog.user.name}</p>
-          <button style={removeButtonStyle} onClick={deleteBlog}>
-            Remove
-          </button>
+          {isBlogMadeByThisUser && (
+            <button style={removeButtonStyle} onClick={deleteBlog}>
+              Remove
+            </button>
+          )}
         </div>
       )}
     </div>

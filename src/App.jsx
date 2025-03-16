@@ -110,6 +110,7 @@ const App = () => {
       }
       setBlogs((prevlogs) => prevlogs.filter((b) => b.id !== id))
     } catch (error) {
+      console.log(error)
       errorHandler(error, setNotification)
     }
   }
@@ -157,6 +158,7 @@ const App = () => {
               blog={blog}
               handleNewLike={handleNewLike}
               handleDeleteBlog={handleDeleteBlog}
+              username={user.username}
             />
           ))}
         </div>
